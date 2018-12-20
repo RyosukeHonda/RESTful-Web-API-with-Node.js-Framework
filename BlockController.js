@@ -53,8 +53,9 @@ class BlockController {
                 let blockAux = new BlockClass.Block(req.body.body);
                 blockAux.height = this.blocks.length + 1;
                 blockAux.hash = SHA256(JSON.stringify(blockAux)).toString();
+                blockAux.previousBlockHash = this.blocks[this.blocks.length-1].hash;
                 this.blocks.push(blockAux);
-                res.send(req.body)
+                res.send(blockAux);
             }
         });
     }
@@ -72,6 +73,9 @@ class BlockController {
                 let blockAux = new BlockClass.Block(`Test Data #${index}`);
                 blockAux.height = index;
                 blockAux.hash = SHA256(JSON.stringify(blockAux)).toString();
+                if(index >0){
+                 blockAux.previousBlockHash = this.blocks[index-1].hash;
+                }
                 this.blocks.push(blockAux);
             }
         }
